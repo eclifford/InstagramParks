@@ -1,0 +1,3 @@
+define [], () ->
+  console.log 'loaded'
+
