@@ -1,20 +1,51 @@
 define [
+  'underscore',
   'backbone',
-  'cs!images-collection',
-  'cs!wall-view'
-], (Backbone, ImagesCollection, WallView) ->
+  'jquery',
+  'cs!./views/wallView',
+  'cs!./views/mapView',
+  'cs!./views/detailView',
+  'cs!./collections/parksCollection',
+  'cs!./models/parkModel'
+], (_, Backbone, $, WallView, MapView, DetailView, ParksCollection, ParkModel) ->
   GlobalRouter = Backbone.Router.extend
-    routes: 
-      'hello':         "hello",
-      'tags/:tag':     "byTag",    #tags/tag
-      'show/:id':      'show',
-      '*path':         'defaultRoute'
-
     initialize: ->
-      imagesCollection = new ImagesCollection()
-      wallView = new WallView
-        el: 'div#wall'
-        collection: imagesCollection
+      _.bindAll @, 'parkDetail'
+
+      @parksCollection = new ParksCollection()
+      mapView = new WallView
+        el: 'div#map_canvas'
+        collection: @parksCollection
+
+    routes:
+      "park/:id":      "parkDetail"
+
+
+    parkDetail: (id) ->
+      parkModel = new ParkModel()
+      parkModel.url = "/park/#{id}"
+
+      console.log 'parkModel', parkModel
+
+      detailView = new DetailView
+        el: 'div#overlay'
+        model: parkModel
+
+      parkModel.fetch()
+
+      false
+
+
+
+
+
+
+
+      # imagesCollection = new ImagesCollection()
+      # wallView = new WallView
+      #   el: 'div#wall'
+      #   collection: imagesCollection
+
 
       # @postList = new App.Collections.Posts()
       # @postListView = new App.Views.PostListView(

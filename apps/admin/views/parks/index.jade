@@ -1,0 +1,24 @@
+h1= title
+p Welcome to #{title} bitchs
+
+//- each park in parks
+//-   li= park.name
+//-     a(href='/admin/parks/#{park._id}') edit
+
+
+table.table.table-striped
+  each park in parks
+    tr 
+      td 
+        | #{park.name}
+      td 
+        | #{park.lng}
+      td
+        | #{park.lat}
+      td
+        a(href='/admin/parks/delete/#{park._id}') delete
+      td 
+        a(href="/admin/parks/#{park._id}") edit
+
+a.btn(href='/admin/parks/new')
+  | Add Park

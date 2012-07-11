@@ -3,5 +3,5 @@ define [
 ], (Backbone) ->
   ImageModel = Backbone.Model.extend
 
-    validate: (attrs) ->
+    # validate: (attrs) ->
 

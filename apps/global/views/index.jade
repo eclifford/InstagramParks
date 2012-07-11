@@ -1,6 +1,3 @@
-div.hero-unit
-  h1 #{title}
-
 div#map_canvas
 div#wall
   form.well.form-inline
@@ -8,26 +5,11 @@ div#wall
     input#lng.input-small(type='text', placeholder='lng')
     a.btn hi
   ul
+div#overlay
 :coffeescript
   require ['cs!global/client/router', 'backbone'], (Router, Backbone) ->
     _router = new Router
     Backbone.history.start()
 
-    myOptions =
-      center: new google.maps.LatLng(37.78265474565738, -122.387866973877)
-      zoom: 12
-      mapTypeId: google.maps.MapTypeId.ROADMAP
-
-    map = new google.maps.Map document.getElementById("map_canvas"), myOptions
-    overlay = new google.maps.OverlayView()
-    overlay.draw = ->
-      overlay.setMap(map)
-
-
-
-    google.maps.event.addListener map, 'mousemove', (point) ->
-      #console.log point.latLng.$a
-      $('#lat').val(point.latLng.$a)
-      $('#lng').val(point.latLng.ab)
 
 

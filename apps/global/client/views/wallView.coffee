@@ -10,36 +10,36 @@ define [
   'jquery-masonry'
 ], (_, Backbone, WallItemView, $) ->
   WallView = Backbone.View.extend
-    events: ->
-      'click a': 'update'
-
     initialize: ->
-      _.bindAll @, 'render', 'update'
-
-    update: ->
-
+      _.bindAll @, 'render'
       @collection.bind 'reset', @render
-      @collection.fetch
-        data: 
-          lng: $('input#lng').val()
-          lat: $('input#lat').val()   
-          distance: 1000
+      @collection.fetch()
 
     render: ->
-      $('ul', @el).html ''
-      _.each @collection.models, (item) ->
-        @renderItem item
-      , @
+      myOptions =
+        center: new google.maps.LatLng(39.50, -98.35)
+        zoom: 5
+        mapTypeId: google.maps.MapTypeId.TERRAIN
 
-      container = $('ul')
-      container.imagesLoaded ->
-        container.masonry
-          itemSelector: 'li'
-          columWidth: 200
+      map = new google.maps.Map document.getElementById("map_canvas"), myOptions
+
+      @collection.each (item, i) ->
+        console.log item
+        latLng = new google.maps.LatLng(item.get('lat').valueOf(), item.get('lng').valueOf())
+        console.log latLng
+        marker = new google.maps.Marker
+          position: latLng
+          map: map
+          title: 'Testing'
+          id: item.get('_id')
+
+        google.maps.event.addListener marker, 'click', ->
+          Backbone.history.navigate("park/#{marker.id}", {silent: true, trigger: true})
+          #Backbone.history.navigate("#park/#{marker.id}", {trigger: true})
+          #swindow.location.hash = "#park/#{marker.id}"
+          #Backbone.navigate("park/#{item.id}", {trigger: true});
+          false
+      
       @
 
-    renderItem: (item) ->
-      wallItemView = new WallItemView
-        model: item
-      $('ul', @el).append wallItemView.render().el
 

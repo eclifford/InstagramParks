@@ -17,7 +17,7 @@ define [
     initialize: ->
 
     render: ->
-      $(@el).html _.template(WallItemTemplate, @model.toJSON())
+      $(@el).html _.template(WallItemTemplate, @model)
       @
 
 
