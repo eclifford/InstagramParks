@@ -1,12 +1,15 @@
 config      = require 'config'
 mongoose    = require 'mongoose'
 
-Park  = require('../park')
+ParkSchema  = require('../park')
+ImageSchema = require '../image'
 
 class ParkRepository
+
   constructor: ->
     mongoose.connect config.database.url
     @Park = mongoose.model 'Park', ParkSchema
+    @Image = mongoose.model 'Image', ImageSchema
 
   all: (callback) ->
     @Park.find {}, (err, park) ->
@@ -32,5 +35,12 @@ class ParkRepository
       callback err
 
   addImage: (park, image, callback) ->
+    _image = new @Image()
+    _image.url = image.url
+    _image.time_stamp = image.time_stamp
+    park.images.push _image
+    park.timeLastUpdated = Math.round(new Date().getTime() / 1000)
+    park.save (err) ->
+      callback err
 
 module.exports = ParkRepository

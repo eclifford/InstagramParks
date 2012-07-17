@@ -4,4 +4,4 @@ Schema      = mongoose.Schema
 ImageSchema = new Schema
   url: String
 
-module.exports.ImageSchema = ImageSchema
+module.exports = ImageSchema

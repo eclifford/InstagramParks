@@ -1,9 +1,8 @@
-Park    = require('../../models/park')
-# ImageRepository   = require('../../models/repositories/imageRepository')
-namespace         = require('express-namespace')
+ParkRepository    = require '../../models/repositories/parkRepository'
+namespace         = require 'express-namespace'
 
 routes = (app) ->
-  park = new Park();
+  parkRepository = new ParkRepository()
 
   app.namespace '/admin', ->
     app.get '/', (req, res) ->
@@ -12,7 +11,7 @@ routes = (app) ->
 
     app.namespace '/parks', ->
       app.get '/', (req, res) ->
-        park.all (err, parks) ->
+        parkRepository.all (err, parks) ->
           res.render "#{__dirname}/views/parks/index",
             title: 'Parks'
             parks: parks  
@@ -22,15 +21,15 @@ routes = (app) ->
           title: 'New Park'
 
       app.post '/new', (req, res) ->
-        park.new req.body.park, (err, park) ->
+        parkRepository.new req.body.park, (err, park) ->
           res.redirect '/admin/parks'
 
       app.get '/delete/:id', (req, res) ->
-        park.remove req.params.id, (err) ->
+        parkRepository.remove req.params.id, (err) ->
           res.redirect '/admin/parks'   
 
       app.get '/edit/:id', (req, res) ->
-        park = park.get req.params.id, (err, park) ->
+        park = parkRepository.get req.params.id, (err, park) ->
           res.render "#{__dirname}/views/parks/edit",
             title: 'Edit Park',
             park: park
