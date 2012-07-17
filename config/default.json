@@ -1,0 +1,9 @@
+{
+  "database": {
+    "url": "mongodb://nodejitsu:4873d0578494a463a95760144e9cc5aa@flame.mongohq.com:27061/nodejitsudb221683737493"
+  },
+  "instagram": {
+    "client_id": "b3481714257943a4974e4e7ba99eb357",
+    "client_secrent": "424e2760ecfb4a6e9be301257d401a80"
+  }
+}

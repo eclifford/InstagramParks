@@ -1,16 +1,24 @@
 {
   "name": "application-name",
-  "version": "0.0.1",
+  "version": "0.0.1-1",
   "private": true,
   "dependencies": {
     "express": "2.5.10",
     "jade": ">= 0.0.1",
-    "express-namespace": "~0.1.0",
+    "express-namespace": "~0.1.1",
     "coffee-script": "~1.3.3",
     "connect-assets": "~2.2.1",
     "express-coffee": "0.0.9",
     "instagram-node-lib": "0.0.7",
     "mongoose": "~2.7.1",
-    "cron": "~0.3.3"
+    "cron": "~0.3.3",
+    "config": "~0.4.15"
+  },
+  "subdomain": "eclifford.InstagramParks",
+  "scripts": {
+    "start": "app.coffee"
+  },
+  "engines": {
+    "node": "0.6.x"
   }
 }

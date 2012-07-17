@@ -1,20 +1,9 @@
-mongoose    = require 'mongoose'
 config      = require 'config'
-Schema      = mongoose.Schema
+mongoose    = require 'mongoose'
 
-ImageSchema = require('./image').ImageSchema
+Park  = require('../park')
 
-ParkSchema = new Schema
-  subscription: Number,
-  name: String,
-  lng: Number,
-  lat: Number,
-  description: String,
-  hours: String,
-  address: String,
-  images: [ImageSchema]
-
-class ParkRepository 
+class ParkRepository
   constructor: ->
     mongoose.connect config.database.url
     @Park = mongoose.model 'Park', ParkSchema
@@ -42,5 +31,6 @@ class ParkRepository
     park.save (err) ->
       callback err
 
-module.exports.ParkSchema = ParkSchema
-module.exports = Park
+  addImage: (park, image, callback) ->
+
+module.exports = ParkRepository
