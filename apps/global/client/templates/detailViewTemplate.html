@@ -1,4 +1,22 @@
+
+
+
 <h1><%= name %></h1>
+
+<ul class="thumbnails">
 <% _.each(images, function(image) { %>
-  <img src="<%= image.url %>"></img>
+   <li class="span3">
+    <div class="thumbnail">
+      <img src="<%= image.images.low_resolution.url %>" alt="">
+      <img src="<%= image.user.profile_picture %>" width="50px" style='float: left; padding: 5px'></img>
+      <h5>Filter: <%= image.filter %></h5>
+      <h5>Owner: <%= image.user.username %> [<%= image.user.full_name %>]</h5>
+      <h5>Tags:</h5>
+      <% _.each(image.tags, function(tag) { %>
+        <span class="badge badge-info"><%= tag %></span>
+      <% }); %>
+      <div style="clear: left"></div>
+    </div>
+  </li>
 <% }); %>
+</ul>

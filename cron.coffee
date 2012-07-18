@@ -8,41 +8,54 @@ ImageRepository   = require './models/repositories/imageRepository'
 parkRepository = new ParkRepository()
 imageRepository = new ImageRepository()
 
-console.log config.instagram.client_id
-
-instagram.set 'client_id', config.instagram.cient_id
+instagram.set 'client_id', config.instagram.client_id
 instagram.set 'client_secret', config.instagram.client_secret
 
 Task = 
   start: ->
     that = @
     cronJob = cron.CronJob
-    new cronJob("1 * * * * *", ->
+    new cronJob("5 * * * * *", ->
       console.log 'starting job'
 
       parkRepository.all (err, parks) ->
-        console.log parks
         for park in parks
           that.fetchImages park
 
     , null, true, "America/Los_Angeles")  
 
   fetchImages: (park) ->    
-    console.log 'fetching images for park'
     lat = park.lat.valueOf()
     lng = park.lng.valueOf()
     instagram.media.search
       lat: lat
       lng: lng
-      radius: 5000
+      distance: 5000
+      min_timestamp: park.timeLastUpdated * 1 # Hack to convert to number
       complete: (data) ->
         for item in data
-          if park.timeLastUpdated < item.created_time
-            image = 
-              url: item.images.low_resolution.url
-              time_stamp: item.created_time
+          image = 
+            filter: item.filter
+            tags: item.tags
+            # caption: item.caption
+            user: 
+              username: item.user.username
+              full_name: item.user.full_name
+              profile_picture: item.user.profile_picture
+              id: item.user.id
+            created_time: item.created_time
+            images:
+              low_resolution: 
+                url: item.images.low_resolution.url
+              thumbnail: 
+                url: item.images.thumbnail.url
+              standard: 
+                url: item.images.standard_resolution.url
+            id: item.id
+            location: item.location
 
-            parkRepository.addImage park, image, ->
+          parkRepository.addImage park, image, (err) ->
+            console.log 'image added:', image
 
 Task.start()
 

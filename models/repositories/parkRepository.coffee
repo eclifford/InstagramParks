@@ -21,26 +21,45 @@ class ParkRepository
 
   remove: (id, callback) ->
     park = @get id, ->
-      @Park.remove()
+      park.remove()
       callback null
 
   new: (park, callback) ->
-    park = new @Park()
-    park.name = park.name
-    park.lng = park.lng
-    park.lat = park.lat
-    park.timeLastUpdated = 0
-    park.address = '1234'
-    park.save (err) ->
-      callback err
+    _park = new @Park()
+    _park.name = park.name
+    _park.lng = park.lng
+    _park.lat = park.lat
+    _park.timeLastUpdated = 0
+    _park.address = '1234'
+    _park.save (err) ->
+      callback err, _park
 
   addImage: (park, image, callback) ->
     _image = new @Image()
-    _image.url = image.url
-    _image.time_stamp = image.time_stamp
+    _image = image
     park.images.push _image
-    park.timeLastUpdated = Math.round(new Date().getTime() / 1000)
+    park.timeLastUpdated = Math.round((new Date()).getTime() / 1000)
     park.save (err) ->
       callback err
+
+  removeImages: (park, callback) ->
+    console.log 'parkid', park.id
+    @Park.findById park.id, (err, park) ->
+      console.log park.images
+      park.images = []
+      park.save (err) ->
+        callback err
+
+  resetLastUpdated: (callback) ->
+
+    query = @Park.find {}
+
+    query.exec (err, parks) ->
+      for park in parks
+        #console.log park
+        park.timeLastUpdated = 0
+        park.save (err, data) ->
+          console.log 'saved park', data, err
+
 
 module.exports = ParkRepository

@@ -5,7 +5,6 @@ Schema      = mongoose.Schema
 ImageSchema = require('./image')
 
 ParkSchema = new Schema
-  subscription: Number,
   name: String,
   lng: Number,
   lat: Number,
@@ -13,5 +12,7 @@ ParkSchema = new Schema
   hours: String,
   address: String,
   images: [ImageSchema]
+  timeLastUpdated: Number
+  # comments: [CommentSchema]
 
 module.exports = ParkSchema
